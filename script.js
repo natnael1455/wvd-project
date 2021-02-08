@@ -1,7 +1,7 @@
-function removeOverlay(){
-	let element = document.getElementById("overlay")
-	element.style.display="none";
 
+
+function removeOverlay(){
+	
 	var c = document.getElementById("myCanvas");
 	c.width = c.offsetWidth;
 	c.height = c.offsetHeight;
@@ -22,4 +22,38 @@ function removeOverlay(){
 	ctx.bezierCurveTo(100, 400, 300, 400, 300, 200);
 	ctx.strokeStyle = 'Green';
 	ctx.stroke();
+}
+
+function display(){
+	var c = document.getElementById("myCanvas");
+	c.width = c.offsetWidth;
+	c.height = c.offsetHeight;
+	var ctx = c.getContext("2d");
+
+	sun(c.height,ctx,100,100);
+	moon(c.height,ctx,700,200);
+
+}
+
+
+function sun(size,ctx,x,y){
+	ctx.beginPath();
+	var sun_size=size * 0.30;
+	base_image = new Image();
+  	base_image.src = 'sun.png';
+  	base_image.onload = function(){
+	ctx.drawImage(base_image, x, y,sun_size,sun_size);
+	}
+
+	
+}
+
+function moon(size,ctx,x,y){
+	ctx.beginPath();
+	var moon_size=size* 0.10;
+	moon_image = new Image();
+	moon_image.src = 'moon.png';
+	moon_image.onload = function(){
+    ctx.drawImage(moon_image,x,y,moon_size,moon_size);
+  	}
 }
