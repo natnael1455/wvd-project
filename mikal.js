@@ -21,11 +21,11 @@ function drawHouse(ctx,location,scale){
 
     //roof
     ctx.beginPath();
-    ctx.moveTo(-0.3,-0.6);//start
-    ctx.lineTo(1,-0.6);//horizontal
-    ctx.lineTo(+0.7,-1);//to up
-    ctx.lineTo(-0.2,-1);// straight
-    ctx.lineTo(-0.5,-0.6);//to down
+    ctx.moveTo(-0.3,-0.6);
+    ctx.lineTo(1,-0.6);
+    ctx.lineTo(+0.7,-1);
+    ctx.lineTo(-0.2,-1);
+    ctx.lineTo(-0.5,-0.6);
     ctx.closePath();
     ctx.stroke();
     ctx.fill();
