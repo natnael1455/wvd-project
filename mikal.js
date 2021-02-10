@@ -46,7 +46,7 @@ function drawHouse(ctx,location,scale){
     ctx.strokeRect(0.21*SIZE, 0.59*SIZE, 450, 300);
 
     //door
-    ctx.fillStyle="gray";
+    ctx.fillStyle="black";
     ctx.beginPath();
     ctx.restore();
     ctx.moveTo(0.52*SIZE, 0.71*SIZE);
