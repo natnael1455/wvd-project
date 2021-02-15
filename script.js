@@ -31,7 +31,7 @@ function display(){
 	var ctx = c.getContext("2d");
 
 	sun(c.height,ctx,100,100);
-	moon(c.height,ctx,700,200);
+	moon(c.height,ctx,700,100);
 
 }
 
@@ -50,7 +50,7 @@ function sun(size,ctx,x,y){
 
 function moon(size,ctx,x,y){
 	ctx.beginPath();
-	var moon_size=size* 0.10;
+	var moon_size=size* 0.30;
 	moon_image = new Image();
 	moon_image.src = 'moon.png';
 	moon_image.onload = function(){
