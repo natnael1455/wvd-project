@@ -2,6 +2,9 @@
 
 let angle =0;
 let SIZE = 0;
+let w;
+let h;
+
 
 
 window.onload = function () {
@@ -11,12 +14,14 @@ window.onload = function () {
 
 
 function main(){
+	
 	let interval= setInterval(animation,10);
+	tree_display();
 }
 
 function animation(){
 	sun_rotation();
-	tree_display();
+	
 }
 
 function display(){
@@ -25,7 +30,17 @@ function display(){
 	canvas.height=canvas.offsetHeight;
 	let height= canvas.height
 	let ctx = canvas.getContext("2d");
-	moon(height,ctx,300,300);
+	moon(height,ctx,70,70);
+}
+function house(size,ctx,x,y){
+	
+	ctx.beginPath();
+	var house_size=size* 0.50;
+	house_image = new Image();
+	house_image.src = 'house.png';
+	house_image.onload = function(){
+    ctx.drawImage(house_image,x,y,house_size,house_size);
+  	}
 }
 
 function tree_display(){
@@ -34,8 +49,12 @@ function tree_display(){
 
 	canvas.width=canvas.offsetWidth;
 	canvas.height=canvas.offsetHeight;
-	SIZE =canvas.height;
-	drawTree(ctx,'autumn',[SIZE/2,SIZE-50],'green', 200, 0, 30);
+	//canvas.style.background = "rgb(0,0,0,0)"
+	w=canvas.width;
+	h=canvas.height;
+	house(h+70,ctx,w/10,h-150);
+	drawTree(ctx,'summer',[canvas.width*0.75,canvas.height-10],'green', canvas.height/6, 0, 20);
+	console.log(canvas.height)
 	}
 
 
@@ -114,10 +133,10 @@ function drawTree(ctx,season,loc,color,height, angle, thick){
 	ctx.stroke();
 	//console.log(height)
 	
-	if (height<5){
+	if (height<(h/90)){
 		ctx.beginPath();
 		if (season==='autumn'){
-			var grd = ctx.createLinearGradient(0, -height, -height+5, -height+5);
+			var grd = ctx.createLinearGradient(0, -height, -height+4, -height+4);
 			grd.addColorStop(0, "red");
 			grd.addColorStop(0.5, "orange");
 			ctx.fillStyle = grd;

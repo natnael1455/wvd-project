@@ -1,15 +1,18 @@
 const SIZE = 1000;
-
+let w;
+let h;
 
 
 function display(){
 	let canvas = document.getElementById("myCanvas");
 	let ctx = canvas.getContext("2d");
 
-	canvas.width=SIZE;
-	canvas.height=SIZE;
-	
-	drawTree(ctx,'autumn',[SIZE/2,SIZE-50],'green', 200, 0, 30);
+	canvas.width=canvas.offsetWidth;
+	canvas.height=canvas.offsetHeight;
+	w=canvas.width;
+	h=canvas.height;
+	drawTree(ctx,'summer',[canvas.width*0.75,canvas.height-10],'green', canvas.height/5, 0, 20);
+	console.log(canvas.height)
 	}
 
 
@@ -28,10 +31,10 @@ function drawTree(ctx,season,loc,color,height, angle, thick){
 	ctx.stroke();
 	//console.log(height)
 	
-	if (height<5){
+	if (height<(h/90)){
 		ctx.beginPath();
 		if (season==='autumn'){
-			var grd = ctx.createLinearGradient(0, -height, -height+5, -height+5);
+			var grd = ctx.createLinearGradient(0, -height, -height+4, -height+4);
 			grd.addColorStop(0, "red");
 			grd.addColorStop(0.5, "orange");
 			ctx.fillStyle = grd;
