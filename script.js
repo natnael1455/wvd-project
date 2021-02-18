@@ -11,7 +11,7 @@ window.onload = function () {
 
 
 function main(){
-	let interval= setInterval(display,50);
+	let interval= setInterval(display,10);
 }
 
 
@@ -43,7 +43,7 @@ function display(){
 		angle =0;
 	}
 	else{
-	angle +=1;
+	angle +=0.1;
 	}
 	
 }
