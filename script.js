@@ -15,12 +15,14 @@ window.onload = function () {
 
 function main(){
 	
-	let interval= setInterval(animation,10);
+	let interval= setInterval(animation,80);
 	tree_display();
+	
 }
 
 function animation(){
 	sun_rotation();
+	
 	
 }
 
@@ -86,7 +88,7 @@ function sun_rotation(){
 		angle =0;
 	}
 	else{
-	angle +=0.1;
+	angle +=0.10;
 	}
 	console.log(angle)
 }
