@@ -15,7 +15,7 @@ window.onload = function () {
 
 function main(){
 	
-	let interval= setInterval(animation,80);
+	let interval= setInterval(animation,50);
 	tree_display();
 	
 }
