@@ -4,6 +4,8 @@ let angle =0;
 let SIZE = 0;
 let w;
 let h;
+let time = 0;
+
 
 
 
@@ -16,14 +18,15 @@ window.onload = function () {
 function main(){
 	
 	let interval= setInterval(animation,50);
+	
 	tree_display();
 	
 }
 
-function animation(){
+function animation(time){
 	sun_rotation();
-	
-	
+	if(time 0)
+	time +=50;
 }
 
 function display(){
