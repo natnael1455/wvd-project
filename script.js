@@ -1,13 +1,17 @@
 
 
 let angle =0;
-let SIZE = 0;
+let SIZE = 1000;
 let w;
 let h;
+let order = 0;
+let leaves = [];
+let alpha = 255;
+let canvas1;
+let canvas2;
+let grn = 255;
+
 let time = 0;
-
-
-
 
 window.onload = function () {
     main();
@@ -16,29 +20,59 @@ window.onload = function () {
 
 
 function main(){
+	canvas1 = initializeCanvas("myCanvas_tree");
+	canvas2 = initializeCanvas("myCanvas_leaves");
+	let canvas3 = initializeCanvas("myCanvas_house");
+	canvas3.width=window.innerWidth;
+	canvas3.height=window.innerHeight;
+	let ctx = canvas3.getContext("2d");
+	house(window.innerHeight,ctx,window.innerWidth/10,window.innerHeight/2-40);
+	tree_display(canvas1,canvas2);
+
+	setInterval(animation,50);
 	
-	let interval= setInterval(animation,50);
 	
-	tree_display();
-	
+	//setInterval(changeSeason,3000,canvas1)
+}
+function initializeCanvas(canvasName){
+	canvas = document.getElementById(canvasName);
+	return canvas;
 }
 
-function animation(time){
+
+function animation(){
 	sun_rotation();
-	if(time 0)
-	time +=50;
+	if (time >=0 && time< 300000){
+		// summer here
+		
+		//grn = grn*0.9
+		let color = [0,grn,0,255]
+		drawLeaves(canvas2,color);
+	}
+	
+	else if (time >=300000 && time<600000){
+		// autumn here
+		color = [200,200,0,255]
+		drawLeaves(canvas2,color);
+	}
+	
+	else if (time >=600000 && time< 900000){
+		// winter here
+	}
+	
+	else if (time >=900000 && time< 1200000){
+		// spring here
+	}
+
+	else{
+		//start animation over again
+		time = 0
+	}
+	time = time+50;
 }
 
-function display(){
-	let canvas = document.getElementById("myCanvas1");
-	canvas.width=canvas.offsetWidth;
-	canvas.height=canvas.offsetHeight;
-	let height= canvas.height
-	let ctx = canvas.getContext("2d");
-	moon(height,ctx,70,70);
-}
 function house(size,ctx,x,y){
-	
+
 	ctx.beginPath();
 	var house_size=size* 0.50;
 	house_image = new Image();
@@ -48,26 +82,31 @@ function house(size,ctx,x,y){
   	}
 }
 
-function tree_display(){
-	let canvas = document.getElementById("myCanvas1");
-	let ctx = canvas.getContext("2d");
+function tree_display(canvas1,canvas2){
 
-	canvas.width=canvas.offsetWidth;
-	canvas.height=canvas.offsetHeight;
-	//canvas.style.background = "rgb(0,0,0,0)"
+	canvas = canvas1;
+
+	canvas.width=window.innerWidth;
+	canvas.height=window.innerHeight;
+	canvas2.width=window.innerWidth;
+	canvas2.height=window.innerHeight;
+	let ctx = canvas.getContext("2d");
+	let ctx1 = canvas2.getContext("2d");
+
 	w=canvas.width;
 	h=canvas.height;
-	house(h+70,ctx,w/10,h-150);
-	drawTree(ctx,'summer',[canvas.width*0.75,canvas.height-10],'green', canvas.height/6, 0, 20);
-	console.log(canvas.height)
+	//house(h,ctx,w/10,canvas.height/2+40);
+	drawTree(ctx,ctx1,'summer',[canvas.width*0.75,canvas.height-10],'green', canvas.height/6+10, 0, 20,255);
+	
 	}
 
 
 
 function sun_rotation(){
-	c = document.getElementById("myCanvas");
-	c.width = c.offsetWidth;
-	c.height = c.offsetHeight;
+	c = document.getElementById("myCanvas_sun");
+
+	c.width=window.innerWidth;;
+	c.height=window.innerHeight;
 	//finding the center of the canvas
 	 xc=Math.round(c.width/2)
 	 yc=Math.round(c.height/2)
@@ -91,9 +130,9 @@ function sun_rotation(){
 		angle =0;
 	}
 	else{
-	angle +=0.10;
+	angle +=0.1;
 	}
-	console.log(angle)
+	//console.log(angle)
 }
 
 
@@ -123,47 +162,101 @@ function moon(size,ctx,x,y){
   	}
 }
 
-function drawTree(ctx,season,loc,color,height, angle, thick){
+function drawTree(ctx,ctx1,season,loc,color,height, angle, thick,a){
 	
 	ctx.beginPath();
+	ctx1.beginPath();
 	ctx.save();
-	ctx.strokeStyle = 'rgb(145,94,47)';
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = 'rgb(145,94,47)';
+	ctx1.save();
+	
+	ctx.strokeStyle = `rgba(110,94,60,${a})`;
+
+	//console.log(ctx.strokeStyle)
+    //ctx.shadowBlur = 20;
+    //ctx.shadowColor = 'rgb(120,94,47)';
 	ctx.lineWidth = thick;
 	ctx.translate(loc[0],loc[1]);
+	ctx1.translate(loc[0],loc[1]);
 	ctx.rotate(angle*Math.PI/180);
+	ctx1.rotate(angle*Math.PI/180);
 	ctx.moveTo(0,0);
+	ctx1.moveTo(0,0);
 	ctx.lineTo(0,-height);
+	ctx1.lineTo(0,-height);
 	ctx.stroke();
 	//console.log(height)
 	
 	if (height<(h/90)){
-		ctx.beginPath();
+		ctx1.beginPath();
 		if (season==='autumn'){
-			var grd = ctx.createLinearGradient(0, -height, -height+4, -height+4);
+			var grd = ctx1.createLinearGradient(0, -height, -height+4, -height+4);
 			grd.addColorStop(0, "red");
 			grd.addColorStop(0.5, "orange");
-			ctx.fillStyle = grd;
-			ctx.shadowColor = 'brown';
+			ctx1.fillStyle = grd;
+			ctx1.shadowColor = 'brown';
 		}
 		else{
-			ctx.fillStyle = color;
-			ctx.shadowColor = color;
+			ctx1.fillStyle = color;
+			//ctx1.shadowColor = color;
 		}
-        ctx.shadowBlur = 20;
-		ctx.arc(0,-height,15,0,Math.PI/2.5);
-		ctx.fill();
+        //ctx1.shadowBlur = 20;
+		let probability = Math.random();
+		if (probability>0.5){
+		ctx1.arc(0,-height,15,0,Math.PI/2.5);
+		ctx1.arc(0,-height,15,0,Math.PI/2.5,false);
+		ctx1.fill();}
 		ctx.restore();
-		
+		ctx1.restore();
 		return;
 	}
+
 	
+	drawTree(ctx,ctx1,season,[0,-height],color,height*0.75, angle+10, thick*0.7,a*0.4);
 	
-	drawTree(ctx,season,[0,-height],color,height*0.75, angle+10, thick*0.6);
-	drawTree(ctx,season,[0,-height],color,height*0.75,angle-10, thick*0.6);
-	
+	drawTree(ctx,ctx1,season,[0,-height],color,height*0.75,angle-10, thick*0.7,a*0.4);
+	drawTree(ctx,ctx1,season,[0,-height],color,height*0.75,0, thick*0.6,a*0.4);
 	
 	ctx.restore();
+	ctx1.restore();
 	
+}
+function getPixelValue(data,x,y,SIZE){
+	return{
+		red:   data[(y*SIZE+x)*4+0],
+		green: data[(y*SIZE+x)*4+1],
+		blue:  data[(y*SIZE+x)*4+2],
+		alpha: data[(y*SIZE+x)*4+3],
+	}
+}
+
+function drawLeaves(canvas,color){
+	//let canvas = document.getElementById("myCanvas_tree");
+	ctx = canvas.getContext("2d");
+	
+	imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+	//var data=imgData.data;
+	//console.log(ctx.canvas.height);
+	for(var y=0;y<canvas.height;y++){
+		for(var x=0;x<canvas.width;x++){
+			var pixel=getPixelValue(imgData.data,x,y,canvas.width);
+			//console.log(pixel.alpha);
+			if (pixel.alpha>=230){
+				imgData.data[(y*canvas.width+x)*4+0]=color[0]
+				imgData.data[(y*canvas.width+x)*4+1]=color[1]
+				imgData.data[(y*canvas.width+x)*4+2]= color[2]
+				imgData.data[(y*canvas.width+x)*4+3]= pixel.alpha
+
+			//	leaves.push([x,y]);}
+			//ctx.clearRect(0,0,canvas.width, canvas.height);
+
+		}
+		else{
+			imgData.data[(y*canvas.width+x)*4+3]= 0;
+		}
+	}
+}
+//ctx.clearRect(0,0,canvas.width, canvas.height);
+ctx.putImageData(imgData,0,0)
+
+//	console.log(leaves)
 }
