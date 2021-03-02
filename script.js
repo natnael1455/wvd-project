@@ -4,15 +4,22 @@ let angle =0;
 let SIZE = 1000;
 let w;
 let h;
-let order = 0;
 let leaves = [];
 let alpha = 255;
 let canvas1;
 let canvas2;
-let grn = 255;
 
+let summerPalette = [[77, 201, 81,255],[35, 97, 37,255]];
+let autumnPalette = [[35, 97, 37,255],[234,125,69,255]];
+//let autumnPalette = [[35, 97, 37,255],[234,125,69,255],[134, 61, 78,255]];
 let time = 0;
 
+let summer_current;
+let autumn_current;
+let summer_change;
+let autumn_change;
+
+let s = 0;
 window.onload = function () {
     main();
 }
@@ -25,7 +32,25 @@ function main(){
 	let canvas3 = initializeCanvas("myCanvas_house");
 	canvas3.width=window.innerWidth;
 	canvas3.height=window.innerHeight;
+	/*let steps = 2000;
+	summer_red_change = (summerPalette[0][0] - summerPalette[1][0]) / steps;
+	summer_green_change = (summerPalette[0][1] - summerPalette[1][1]) / steps;
+	summer_blue_change = (summerPalette[0][2] - summerPalette[1][2]) / steps;
+	summer_current = summerPalette[0];*/
+	
+
+	summer_change = setLeafcolor(summerPalette);
+	summer_current = summerPalette[0];
+	autumn_change = setLeafcolor(autumnPalette); 
+	autumn_current = autumnPalette[0];
+
 	let ctx = canvas3.getContext("2d");
+	ctx.beginPath();
+	ctx.fillStyle = `rgba(${summerPalette[1]})`;
+	//console.log(ctx.fillStyle);
+	ctx.fillRect(0,0,50,50);
+	ctx.fillStyle = `rgba(${autumnPalette[1]})`;
+	ctx.fillRect(100,0,50,50)
 	house(window.innerHeight,ctx,window.innerWidth/10,window.innerHeight/2-40);
 	tree_display(canvas1,canvas2);
 
@@ -39,34 +64,54 @@ function initializeCanvas(canvasName){
 	return canvas;
 }
 
+function setLeafcolor(palette,steps){
+	let change = [];
+	steps = 1500;
+	change[0] = (palette[0][0] - palette[1][0]) / steps;
+	change[1] = (palette[0][1] - palette[1][1]) / steps;
+	change[2]= (palette[0][2] - palette[1][2]) / steps;
+	return change;
+}
 
 function animation(){
 	sun_rotation();
-	if (time >=0 && time< 300000){
+	if (time >=0 && time< 120000){
 		// summer here
+		console.log('summer');
 		
-		//grn = grn*0.9
-		let color = [0,grn,0,255]
-		drawLeaves(canvas2,color);
+		if(s<=1500){	 
+			s=s+1;
+		summer_current[0] = summer_current[0] - summer_change[0];
+    	summer_current[1] = summer_current[1] - summer_change[1];
+    	summer_current[2] = summer_current[2] - summer_change[2];
+		}	
+		drawLeaves(canvas2,summer_current);
 	}
 	
-	else if (time >=300000 && time<600000){
+	else if (time >=120000 && time<240000){
+		console.log('autumn');
 		// autumn here
-		color = [200,200,0,255]
-		drawLeaves(canvas2,color);
+		if(s<=3000){	 
+			s=s+1;
+		autumn_current[0] = autumn_current[0] - autumn_change[0];
+    	autumn_current[1] = autumn_current[1] - autumn_change[1];
+    	autumn_current[2] = autumn_current[2] - autumn_change[2];
+		}	
+		drawLeaves(canvas2,autumn_current);
+		//leaves falling
 	}
 	
-	else if (time >=600000 && time< 900000){
+	else if (time >=240000 && time< 480000){
 		// winter here
 	}
 	
-	else if (time >=900000 && time< 1200000){
+	else if (time >=480000 && time< 600000){
 		// spring here
 	}
 
 	else{
 		//start animation over again
-		time = 0
+		time = 0;
 	}
 	time = time+50;
 }
@@ -96,7 +141,7 @@ function tree_display(canvas1,canvas2){
 	w=canvas.width;
 	h=canvas.height;
 	//house(h,ctx,w/10,canvas.height/2+40);
-	drawTree(ctx,ctx1,'summer',[canvas.width*0.75,canvas.height-10],'green', canvas.height/6+10, 0, 20,255);
+	drawTree(ctx,ctx1,'summer',[canvas.width*0.75,canvas.height-10],'green', canvas.height/6+10, 0, 25,255);
 	
 	}
 
@@ -168,8 +213,9 @@ function drawTree(ctx,ctx1,season,loc,color,height, angle, thick,a){
 	ctx1.beginPath();
 	ctx.save();
 	ctx1.save();
+	let alph = Math.floor(a);
 	
-	ctx.strokeStyle = `rgba(110,94,60,${a})`;
+	ctx.strokeStyle = `rgba(138,115,98,${alph})`;
 
 	//console.log(ctx.strokeStyle)
     //ctx.shadowBlur = 20;
@@ -185,36 +231,43 @@ function drawTree(ctx,ctx1,season,loc,color,height, angle, thick,a){
 	ctx1.lineTo(0,-height);
 	ctx.stroke();
 	//console.log(height)
-	
-	if (height<(h/90)){
+
+	if (angle === 0 && height<(ctx.canvas.height/30)){
 		ctx1.beginPath();
-		if (season==='autumn'){
-			var grd = ctx1.createLinearGradient(0, -height, -height+4, -height+4);
-			grd.addColorStop(0, "red");
-			grd.addColorStop(0.5, "orange");
-			ctx1.fillStyle = grd;
-			ctx1.shadowColor = 'brown';
-		}
-		else{
-			ctx1.fillStyle = color;
-			//ctx1.shadowColor = color;
-		}
+		ctx1.fillStyle = color;
+		//ctx1.shadowColor = color
         //ctx1.shadowBlur = 20;
-		let probability = Math.random();
-		if (probability>0.5){
-		ctx1.arc(0,-height,15,0,Math.PI/2.5);
-		ctx1.arc(0,-height,15,0,Math.PI/2.5,false);
-		ctx1.fill();}
+		//let probability = Math.random();
+		//if (probability>0.9){
+		ctx1.arc(0,-height,10,0,Math.PI/2);
+		//ctx1.arc(0,-height-20,15,0,Math.PI/2.5);
+		ctx1.fill();
+	//}
+		ctx.restore();
+		ctx1.restore();
+		return;}
+	
+	if (height<(ctx.canvas.height/80)){
+		ctx1.beginPath();
+		ctx1.fillStyle = color;
+		//ctx1.shadowColor = color
+        //ctx1.shadowBlur = 20;
+		//let probability = Math.random();
+		//if (probability>0.9){
+		ctx1.arc(0,-height,10,0,Math.PI/2);
+		//ctx1.arc(0,-height-20,15,0,Math.PI/2.5);
+		ctx1.fill();
+	//}
 		ctx.restore();
 		ctx1.restore();
 		return;
 	}
 
 	
-	drawTree(ctx,ctx1,season,[0,-height],color,height*0.75, angle+10, thick*0.7,a*0.4);
+	drawTree(ctx,ctx1,season,[0,-height],color,height*0.75, angle+10, thick*0.6,alph*0.5);
 	
-	drawTree(ctx,ctx1,season,[0,-height],color,height*0.75,angle-10, thick*0.7,a*0.4);
-	drawTree(ctx,ctx1,season,[0,-height],color,height*0.75,0, thick*0.6,a*0.4);
+	drawTree(ctx,ctx1,season,[0,-height],color,height*0.75,angle-10, thick*0.6,alph*0.5);
+	drawTree(ctx,ctx1,season,[0,-height],color,height*0.77,0, thick*0.7,alph*0.5);
 	
 	ctx.restore();
 	ctx1.restore();
