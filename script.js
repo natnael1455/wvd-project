@@ -8,7 +8,6 @@ let leaves = [];
 let alpha = 255;
 let canvas1;
 let canvas2;
-
 let summerPalette = [[77, 201, 81,255],[35, 97, 37,255]];
 let autumnPalette = [[35, 97, 37,255],[234,125,69,255]];
 //let autumnPalette = [[35, 97, 37,255],[234,125,69,255],[134, 61, 78,255]];
@@ -54,7 +53,7 @@ function main(){
 	house(window.innerHeight,ctx,window.innerWidth/10,window.innerHeight/2-40);
 	tree_display(canvas1,canvas2);
 
-	setInterval(animation,50);
+	setInterval(animation,75);
 	
 	
 	//setInterval(changeSeason,3000,canvas1)
@@ -117,7 +116,9 @@ function animation(){
 }
 
 function house(size,ctx,x,y){
-
+	ctx.beginPath();
+	ctx.fillStyle ="green"
+	ctx.fillRect(0,size*0.75,window.innerWidth,size*0.25);
 	ctx.beginPath();
 	var house_size=size* 0.50;
 	house_image = new Image();
@@ -152,6 +153,19 @@ function sun_rotation(){
 
 	c.width=window.innerWidth;;
 	c.height=window.innerHeight;
+	let l ;
+	if(angle <=90){
+		l= 25 + (angle*0.27777778);
+	}
+
+	else if((90 < angle) && (angle <=270)){
+		l =50-((angle-90)*0.27777778);
+	}
+	else {
+		l=(angle-270)* 0.27777778;
+	}
+
+	c.style.backgroundColor=`hsl(206, 100%, ${l}%)`;
 	//finding the center of the canvas
 	 xc=Math.round(c.width/2)
 	 yc=Math.round(c.height/2)
@@ -168,16 +182,17 @@ function sun_rotation(){
 	//shift the origin of the  screen to the center of the screen so that it can rotate from the center
 	ctx.translate(xc,yc+(yc*0.2))
 	// drawing the sun and the moon in the opsite side of the x axis
+	ctx.beginPath();
 	sun(height,ctx,-r,0);
+	ctx.beginPath();
 	moon(height,ctx,r,0);
 	ctx.rotate(rangle);
-	if (angle === 359){
+	if (angle >= 360){
 		angle =0;
 	}
 	else{
-	angle +=0.1;
+	angle +=1;
 	}
-	//console.log(angle)
 }
 
 
