@@ -164,8 +164,8 @@ function sun_rotation(){
 	else {
 		l=(angle-270)* 0.27777778;
 	}
-
-	c.style.backgroundColor=`hsl(206, 100%, ${l}%)`;
+	;
+	c.style.background=`linear-gradient(0deg,hsl(204, 100%, ${l+10}%) 0%, hsl(206, 100%, ${l}%) 100%)`;
 	//finding the center of the canvas
 	 xc=Math.round(c.width/2)
 	 yc=Math.round(c.height/2)
@@ -191,7 +191,7 @@ function sun_rotation(){
 		angle =0;
 	}
 	else{
-	angle +=1;
+	angle +=0.5;
 	}
 }
 
