@@ -53,7 +53,7 @@ function main(){
 	house(window.innerHeight,ctx,window.innerWidth/10,window.innerHeight/2-40);
 	tree_display(canvas1,canvas2);
 
-	setInterval(animation,75);
+	setInterval(animation,50);
 	
 	
 	//setInterval(changeSeason,3000,canvas1)
