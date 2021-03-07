@@ -8,16 +8,11 @@ let leavesArray = [];
 let alpha = 255;
 let canvas1;
 let canvas2;
-<<<<<<< HEAD
 let canvas4;
 let canvas5;
 let radius = 0;
 const summerPalette = [[77, 201, 81,255],[35, 97, 37,255]];
 const autumnPalette = [[35, 97, 37,255],[234,125,69,255]];
-=======
-let summerPalette = [[77, 201, 81,255],[35, 97, 37,255]];
-let autumnPalette = [[35, 97, 37,255],[234,125,69,255]];
->>>>>>> f8ef965445619ae894620fc8c78e0ef5a8d8b668
 //let autumnPalette = [[35, 97, 37,255],[234,125,69,255],[134, 61, 78,255]];
 let time = 0;
 let frame = 0;
@@ -213,13 +208,8 @@ function sun_rotation(){
 	else {
 		l=(angle-270)* 0.27777778;
 	}
-<<<<<<< HEAD
-
-	c.style.backgroundColor=`hsl(206, 100%, ${l}%)`;
-=======
 	;
 	c.style.background=`linear-gradient(0deg,hsl(204, 100%, ${l+10}%) 0%, hsl(206, 100%, ${l}%) 100%)`;
->>>>>>> f8ef965445619ae894620fc8c78e0ef5a8d8b668
 	//finding the center of the canvas
 	 xc=Math.round(c.width/2)
 	 yc=Math.round(c.height/2)
@@ -245,11 +235,7 @@ function sun_rotation(){
 		angle =0;
 	}
 	else{
-<<<<<<< HEAD
-	angle +=1;
-=======
 	angle +=0.5;
->>>>>>> f8ef965445619ae894620fc8c78e0ef5a8d8b668
 	}
 }
 
