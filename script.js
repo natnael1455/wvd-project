@@ -10,14 +10,31 @@ let summerPalette = [[77, 201, 81,255],[35, 97, 37,255]];
 let autumnPalette = [[35, 97, 37,255],[234,125,69,255]];
 //let autumnPalette = [[35, 97, 37,255],[234,125,69,255],[134, 61, 78,255]];
 let time = 0;
-
 let summer_current;
 let autumn_current;
 let summer_change;
 let autumn_change;
-
 let s = 0;
+let sun_img;
+let moon_img;
+let count =0;
+
+
+
+
 window.onload = function () {
+	sun_img = new Image();
+  	sun_img.src = 'sun.png';
+  	sun_img.onload = function(){
+	count++;
+	}
+
+	moon_img = new Image();
+  	moon_img.src = 'moon.png';
+  	moon_img.onload = function(){
+	count++;
+	}
+
     main();
 }
 
@@ -179,12 +196,12 @@ function sun_rotation(){
 	ctx = c.getContext("2d");
 	//shift the origin of the  screen to the center of the screen so that it can rotate from the center
 	ctx.translate(xc,yc+(yc*0.2))
-	// drawing the sun and the moon in the opsite side of the x axis
-	ctx.beginPath();
-	sun(height,ctx,-r,0);
-	ctx.beginPath();
-	moon(height,ctx,r,0);
+	
 	ctx.rotate(rangle);
+	// drawing the sun and the moon in the opsite side of the x axis
+	moon(height,ctx,r,0);
+	sun(height,ctx,-r,0);
+
 	if (angle >= 360){
 		angle =0;
 	}
@@ -199,13 +216,9 @@ function sun(size,ctx,x,y){
 	var sun_size=size * 0.30;
 	let xo = x-(Math.round(sun_size/2));
 	let yo = y-(Math.round(sun_size/2));
-	base_image = new Image();
-  	base_image.src = 'sun.png';
-  	base_image.onload = function(){
-	ctx.drawImage(base_image, xo, yo,sun_size,sun_size);
+	if(count == 2){
+	ctx.drawImage(sun_img, xo, yo,sun_size,sun_size);
 	}
-
-	
 }
 
 function moon(size,ctx,x,y){
@@ -213,10 +226,8 @@ function moon(size,ctx,x,y){
 	var moon_size=size* 0.30;
 	let xo = x-(Math.round(moon_size/2));
 	let yo = y-(Math.round(moon_size/2));
-	moon_image = new Image();
-	moon_image.src = 'moon.png';
-	moon_image.onload = function(){
-    ctx.drawImage(moon_image,xo,yo,moon_size,moon_size);
+    if(count == 2){
+    ctx.drawImage(moon_img,xo,yo,moon_size,moon_size);
   	}
 }
 
