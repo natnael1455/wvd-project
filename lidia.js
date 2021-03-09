@@ -8,6 +8,7 @@ let leavesArray = [];
 let alpha = 255;
 let canvas1;
 let canvas2;
+let canvas3;
 let canvas4;
 let canvas5;
 let radius = 0;
@@ -16,6 +17,7 @@ const autumnPalette = [[35, 97, 37,255],[234,125,69,255]];
 //let autumnPalette = [[35, 97, 37,255],[234,125,69,255],[134, 61, 78,255]];
 let time = 0;
 let frame = 0;
+let house_image;
 let summer_current=[];
 let autumn_current=[];
 let summer_change;
@@ -28,8 +30,22 @@ const CANVAS_HEIGHT = window.innerHeight;
 
 let selection = [];
 let s = 0;
+let sun_img;
+let moon_img;
+let count =0;
+
 window.onload = function () {
-    main();
+    sun_img = new Image();
+  	sun_img.src = 'sun.png';
+  	sun_img.onload = function(){
+	count++;
+	}
+	moon_img = new Image();
+  	moon_img.src = 'moon.png';
+  	moon_img.onload = function(){
+	count++;
+	}
+	main();
 }
 
 
@@ -37,7 +53,7 @@ window.onload = function () {
 function main(){
 	canvas1 = initializeCanvas("myCanvas_tree");
 	canvas2 = initializeCanvas("myCanvas_leaves");
-	let canvas3 = initializeCanvas("myCanvas_house");
+	canvas3 = initializeCanvas("myCanvas_house");
 	canvas4 = initializeCanvas("myCanvas_leaves_falling");
 	canvas5 = initializeCanvas("myCanvas_spring");
 	canvas3.width=window.innerWidth;
@@ -55,9 +71,11 @@ function main(){
 	autumn_change = setLeafcolor(autumnPalette); 
 	Object.assign(autumn_current,autumnPalette[0]);
 
-	let ctx = canvas3.getContext("2d");
-
-	house(window.innerHeight,ctx,window.innerWidth/10,window.innerHeight/2-40);
+	//let ctx = canvas3.getContext("2d");
+	house_image = new Image();
+	house_image.src = 'house.png';
+	house_image.onload = function(){
+	house(house_image, window.innerHeight,canvas3,window.innerWidth/10,window.innerHeight/2-40)};
 	tree_display(canvas1,canvas2,canvas5);
 
 	setInterval(animation,50);
@@ -137,6 +155,9 @@ function animation(){
 		document.getElementById("myCanvas_leaves").style.visibility = "hidden";
 		document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
 		document.getElementById("myCanvas_spring").style.visibility = "visible";
+		drawGrass(canvas3,radius);
+		let ctx = canvas3.getContext("2d");
+		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
 		if (time >=163000 && time % 1000 == 0){
 			if (radius<=10){
 			radius += 1;
@@ -146,6 +167,7 @@ function animation(){
 			let ctx2 = canvas5.getContext("2d");
 			ctx2.clearRect(0,0,canvas5.width,canvas5.height); 
 			drawTree(ctx,ctx1,ctx2,'summer',[canvas.width*0.75,canvas.height-10],'green', canvas.height/6+10, 0, 25,255);}
+			
 		}
 	}
 
@@ -156,17 +178,16 @@ function animation(){
 	time = time+50;
 }
 
-function house(size,ctx,x,y){
+function house(house_image,size,canvas,x,y){
+	let ctx = canvas.getContext("2d");
 	ctx.beginPath();
-	ctx.fillStyle ="green"
+	ctx.fillStyle ="rgb(139,93,46)";
 	ctx.fillRect(0,size*0.75,window.innerWidth,size*0.25);
 	ctx.beginPath();
 	var house_size=size* 0.50;
-	house_image = new Image();
-	house_image.src = 'house.png';
-	house_image.onload = function(){
+	
     ctx.drawImage(house_image,x,y,house_size,house_size);
-  	}
+  	
 }
 
 function tree_display(canvas1,canvas2,canvas3){
@@ -185,7 +206,7 @@ function tree_display(canvas1,canvas2,canvas3){
 
 	w=canvas.width;
 	h=canvas.height;
-	//house(h,ctx,w/10,canvas.height/2+40);
+	
 	drawTree(ctx,ctx1,ctx2,'summer',[canvas.width*0.75,canvas.height-10],'green', canvas.height/6+10, 0, 25,255);
 	
 	}
@@ -211,26 +232,26 @@ function sun_rotation(){
 	;
 	c.style.background=`linear-gradient(0deg,hsl(204, 100%, ${l+10}%) 0%, hsl(206, 100%, ${l}%) 100%)`;
 	//finding the center of the canvas
-	 xc=Math.round(c.width/2)
-	 yc=Math.round(c.height/2)
+		xc=Math.round(c.width/2)
+		yc=Math.round(c.height/2)
 	//finding the semi axis of rotation which is set to 75% of the canvas semi axis
-	 a=Math.round(xc*1)
-	 b=Math.round(yc*1)
-	 // converting the angle from degree to radiant
-	 let rangle = (Math.PI*angle)/180
-	 // calculating the rudius of the ecllips orbit of rotation
-	 r = (a*b)/Math.sqrt(((a**2)*(Math.sin(rangle)**2))+((b**2)*(Math.cos(rangle)**2)))
+		a=Math.round(xc*1)
+		b=Math.round(yc*1)
+		// converting the angle from degree to radiant
+		let rangle = (Math.PI*angle)/180
+		// calculating the rudius of the ecllips orbit of rotation
+		r = (a*b)/Math.sqrt(((a**2)*(Math.sin(rangle)**2))+((b**2)*(Math.cos(rangle)**2)))
 	r=Math.round(r);
 	let height=c.height
 	ctx = c.getContext("2d");
 	//shift the origin of the  screen to the center of the screen so that it can rotate from the center
 	ctx.translate(xc,yc+(yc*0.2))
-	// drawing the sun and the moon in the opsite side of the x axis
-	ctx.beginPath();
-	sun(height,ctx,-r,0);
-	ctx.beginPath();
-	moon(height,ctx,r,0);
+	
 	ctx.rotate(rangle);
+	// drawing the sun and the moon in the opsite side of the x axis
+	moon(height,ctx,r,0);
+	sun(height,ctx,-r,0);
+
 	if (angle >= 360){
 		angle =0;
 	}
@@ -245,13 +266,9 @@ function sun(size,ctx,x,y){
 	var sun_size=size * 0.30;
 	let xo = x-(Math.round(sun_size/2));
 	let yo = y-(Math.round(sun_size/2));
-	base_image = new Image();
-  	base_image.src = 'sun.png';
-  	base_image.onload = function(){
-	ctx.drawImage(base_image, xo, yo,sun_size,sun_size);
+	if(count == 2){
+	ctx.drawImage(sun_img, xo, yo,sun_size,sun_size);
 	}
-
-	
 }
 
 function moon(size,ctx,x,y){
@@ -259,13 +276,10 @@ function moon(size,ctx,x,y){
 	var moon_size=size* 0.30;
 	let xo = x-(Math.round(moon_size/2));
 	let yo = y-(Math.round(moon_size/2));
-	moon_image = new Image();
-	moon_image.src = 'moon.png';
-	moon_image.onload = function(){
-    ctx.drawImage(moon_image,xo,yo,moon_size,moon_size);
-  	}
+	if(count == 2){
+	ctx.drawImage(moon_img,xo,yo,moon_size,moon_size);
+		}
 }
-
 function drawTree(ctx,ctx1,ctx2,season,loc,color,height, angle, thick,a){
 	
 	ctx.beginPath();
@@ -367,6 +381,27 @@ function drawSpringLeaves(canvas,radius){
 	}
 }
 
+}
+function drawGrass(canvas,radius){
+	let h = radius+10;
+	ctx = canvas.getContext("2d");
+	let size = window.innerHeight;
+	for (let i = 0; i<=10; i++){
+	let strt_x = Math.random()*window.innerWidth;
+	let strt_y = Math.random()*size*0.25 + size*0.75;
+	let end_x = strt_x;
+	let end_y = strt_y - h;
+
+	let cp_x1 = strt_x+3;
+	let cp_y1 = strt_y-h/2;
+	let cp_x2 = strt_x+5;
+	let cp_y2 = strt_y-h/2;
+	ctx.strokeStyle = `rgba(${summerPalette[0]})`;
+	ctx.beginPath();
+	ctx.moveTo(strt_x,strt_y);
+	ctx.bezierCurveTo( cp_x1,  cp_y1, cp_x2, cp_y2, end_x, end_y);
+	ctx.stroke();
+	ctx.closePath();}
 }
 
 function drawLeaves(canvas,color){
