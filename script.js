@@ -34,6 +34,7 @@ window.onload = function () {
   	moon_img.onload = function(){
 	count++;
 	}
+	
 
     main();
 }
@@ -199,8 +200,8 @@ function sun_rotation(){
 	
 	ctx.rotate(rangle);
 	// drawing the sun and the moon in the opsite side of the x axis
-	moon(height,ctx,r,0);
-	sun(height,ctx,-r,0);
+	draw_both(moon_img,height,ctx,r,0);
+	draw_both(sun_img,height,ctx,-r,0);
 
 	if (angle >= 360){
 		angle =0;
@@ -211,25 +212,17 @@ function sun_rotation(){
 }
 
 
-function sun(size,ctx,x,y){
+function draw_both(img,size,ctx,x,y){
 	ctx.beginPath();
 	var sun_size=size * 0.30;
 	let xo = x-(Math.round(sun_size/2));
 	let yo = y-(Math.round(sun_size/2));
 	if(count == 2){
-	ctx.drawImage(sun_img, xo, yo,sun_size,sun_size);
+	ctx.drawImage(img, xo, yo,sun_size,sun_size);
 	}
 }
 
-function moon(size,ctx,x,y){
-	ctx.beginPath();
-	var moon_size=size* 0.30;
-	let xo = x-(Math.round(moon_size/2));
-	let yo = y-(Math.round(moon_size/2));
-    if(count == 2){
-    ctx.drawImage(moon_img,xo,yo,moon_size,moon_size);
-  	}
-}
+
 
 function drawTree(ctx,ctx1,season,loc,color,height, angle, thick,a){
 	
