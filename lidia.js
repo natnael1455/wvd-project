@@ -27,7 +27,8 @@ let snowBgCanvas;
 let snowFgCanvas;
 const CANVAS_WIDTH = window.innerWidth;
 const CANVAS_HEIGHT = window.innerHeight;
-
+let petals = ['red','yellow','violet','pink'];
+let flower_center = ['black','blue','cyan'];
 let selection = [];
 let s = 0;
 let sun_img;
@@ -102,7 +103,6 @@ function animation(){
 	if (time >=0 && time< 12000){
 		// summer here
 		console.log('summer');
-		
 		if(s<=240){	 
 			s=s+1;
 		summer_current[0] = summer_current[0] - summer_change[0];
@@ -110,6 +110,11 @@ function animation(){
     	summer_current[2] = summer_current[2] - summer_change[2];
 		}	
 		drawLeaves(canvas2,summer_current);
+		let ctx = canvas3.getContext("2d");
+		ctx.beginPath();
+		ctx.fillStyle =`rgba(${summer_current})`;
+		ctx.fillRect(0,canvas3.height*0.75,window.innerWidth,canvas3.height*0.25);
+		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
 	}
 	
 	else if (time >=12000 && time<20000){
@@ -122,9 +127,16 @@ function animation(){
     	autumn_current[2] = autumn_current[2] - autumn_change[2];
 		}	
 		drawLeaves(canvas2,autumn_current);
-		//leaves falling
+		
+		let ctx = canvas3.getContext("2d");
+		ctx.beginPath();
+		ctx.fillStyle =`rgba(${autumn_current})`;
+		ctx.fillRect(0,canvas3.height*0.75,window.innerWidth,canvas3.height*0.25);
+		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
+
 
 		}
+		//leaves falling
 	else if(time >= 20000 && time <= 140000){
 		if (time === 20000){
 			fallingLeaves(canvas2);
@@ -162,11 +174,12 @@ function animation(){
 			if (radius<=10){
 			radius += 1;
 			//drawSpringLeaves(canvas5,radius);
-			let ctx = canvas1.getContext("2d");
-			let ctx1 = canvas2.getContext("2d");
-			let ctx2 = canvas5.getContext("2d");
-			ctx2.clearRect(0,0,canvas5.width,canvas5.height); 
-			drawTree(ctx,ctx1,ctx2,'summer',[canvas.width*0.75,canvas.height-10],'green', canvas.height/6+10, 0, 25,255);}
+			let ctx1 = canvas1.getContext("2d");
+			let ctx2 = canvas2.getContext("2d");
+			let ctx3 = canvas5.getContext("2d");
+			ctx3.clearRect(0,0,canvas5.width,canvas5.height);
+			ctx1.clearRect(0,0,canvas1.width,canvas1.height);
+			drawTree(ctx1,ctx2,ctx3,'summer',[canvas1.width*0.75,canvas1.height-10],'green', canvas1.height/6+10, 0, 25,255);}
 			
 		}
 	}
@@ -401,7 +414,42 @@ function drawGrass(canvas,radius){
 	ctx.moveTo(strt_x,strt_y);
 	ctx.bezierCurveTo( cp_x1,  cp_y1, cp_x2, cp_y2, end_x, end_y);
 	ctx.stroke();
-	ctx.closePath();}
+	ctx.closePath();
+
+	if (Math.random()>0.95){
+		let petal_color = Math.floor(Math.random()*3); 
+		let center_color = Math.floor(Math.random()*2); 
+		ctx.beginPath();
+		ctx.fillStyle = petals[petal_color];
+		ctx.arc(end_x,end_y-6,3,0,Math.PI*2,true);
+		ctx.fill();
+		ctx.closePath();
+		ctx.beginPath();
+		ctx.fillStyle = flower_center[center_color];
+		ctx.arc(end_x,end_y-6,2,0,Math.PI*2,true);
+		ctx.fill();
+		ctx.closePath();
+		ctx.beginPath();
+		ctx.fillStyle = petals[petal_color];
+		ctx.arc(end_x-3,end_y-6,3,Math.PI/2,-Math.PI/2,false);
+		ctx.fill();
+		ctx.closePath();
+		ctx.beginPath();
+		ctx.arc(end_x,end_y-9,3,0,Math.PI,true);
+		ctx.fill();
+		ctx.closePath();
+		ctx.beginPath();
+		ctx.arc(end_x,end_y-3,3,0,Math.PI,false);
+		ctx.fill();
+		ctx.closePath();
+		ctx.beginPath();
+		ctx.arc(end_x+3,end_y-6,3,Math.PI/2,-Math.PI/2,true);
+		ctx.fill();
+		ctx.closePath();
+		
+
+	}
+}
 }
 
 function drawLeaves(canvas,color){
@@ -474,12 +522,12 @@ function fall(){
 	}
 		
 }
-else if ( frame >= 11000) {
+/*else if ( frame >= 11000) {
 	for (let i = 0; i<leavesArray.length; i++){
 		if (!(leavesArray[i].fall)){
 		leavesArray[i].fade();}
 	}
-}
+}*/
 
 	ctx = canvas4.getContext("2d");
 	
