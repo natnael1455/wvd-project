@@ -34,6 +34,9 @@ let s = 0;
 let sun_img;
 let moon_img;
 let count =0;
+const snowflakes = new Image();
+snowflakes.src = 'snowflakes.png';
+const particleArray = [];
 
 window.onload = function () {
     sun_img = new Image();
@@ -52,15 +55,17 @@ window.onload = function () {
 
 
 function main(){
+	for (let i = 0; i < 20; i++){
+		particleArray.push(new Snowflake);
+	}
+	
 	canvas1 = initializeCanvas("myCanvas_tree");
 	canvas2 = initializeCanvas("myCanvas_leaves");
 	canvas3 = initializeCanvas("myCanvas_house");
 	canvas4 = initializeCanvas("myCanvas_leaves_falling");
 	canvas5 = initializeCanvas("myCanvas_spring");
-	canvas3.width=window.innerWidth;
-	canvas3.height=window.innerHeight;
-	canvas4.width=window.innerWidth;
-	canvas4.height=window.innerHeight;
+	snowBgCanvas= initializeCanvas('canvasSnowBackground');
+    snowFgCanvas= initializeCanvas('canvasSnowForeground');
 
 
 	document.getElementById("myCanvas_spring").style.visibility = "hidden";
@@ -86,6 +91,8 @@ function main(){
 }
 function initializeCanvas(canvasName){
 	canvas = document.getElementById(canvasName);
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
 	return canvas;
 }
 
@@ -137,7 +144,7 @@ function animation(){
 
 		}
 		//leaves falling
-	else if(time >= 20000 && time <= 140000){
+	else if(time >= 20000 && time <= 53400){
 		if (time === 20000){
 			fallingLeaves(canvas2);
 			fallStop = setInterval(fall,10);
@@ -146,23 +153,23 @@ function animation(){
 		}
 	
 	
-	else if (time >140000 && time< 162000){
+	else if (time >53400 && time< 62000){
 		// winter here
-		if (time===142000){
+		if (time===54000){
 			
 			document.getElementById("myCanvas_leaves").style.visibility = "hidden";
 			document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
 			clearInterval(fallStop);
 		}
-		//else{
-		//snowAnimation();}
+		else{
+		snowAnimation();}
 		//document.getElementById("myCanvas_leaves").style.visibility = "hidden";
 		//document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
 
 
 	}
 	
-	else if (time >= 162000 && time < 180000){
+	else if (time >= 62000 && time < 80000){
 		// spring here
 		document.getElementById("myCanvas_leaves").style.visibility = "hidden";
 		document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
@@ -170,7 +177,7 @@ function animation(){
 		drawGrass(canvas3,radius);
 		let ctx = canvas3.getContext("2d");
 		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
-		if (time >=163000 && time % 1000 == 0){
+		if (time >=63000 && time % 1000 == 0){
 			if (radius<=10){
 			radius += 1;
 			//drawSpringLeaves(canvas5,radius);
@@ -207,12 +214,7 @@ function tree_display(canvas1,canvas2,canvas3){
 
 	canvas = canvas1;
 
-	canvas.width=window.innerWidth;
-	canvas.height=window.innerHeight;
-	canvas2.width=window.innerWidth;
-	canvas2.height=window.innerHeight;
-	canvas3.width=window.innerWidth;
-	canvas3.height=window.innerHeight;
+
 	let ctx = canvas.getContext("2d");
 	let ctx1 = canvas2.getContext("2d");
 	let ctx2 = canvas3.getContext("2d");
@@ -399,7 +401,7 @@ function drawGrass(canvas,radius){
 	let h = radius+10;
 	ctx = canvas.getContext("2d");
 	let size = window.innerHeight;
-	for (let i = 0; i<=10; i++){
+	for (let i = 0; i<=20; i++){
 	let strt_x = Math.random()*window.innerWidth;
 	let strt_y = Math.random()*size*0.25 + size*0.75;
 	let end_x = strt_x;
@@ -416,7 +418,7 @@ function drawGrass(canvas,radius){
 	ctx.stroke();
 	ctx.closePath();
 
-	if (Math.random()>0.95){
+	if (Math.random()>0.96){
 		let petal_color = Math.floor(Math.random()*3); 
 		let center_color = Math.floor(Math.random()*2); 
 		ctx.beginPath();
@@ -509,7 +511,7 @@ function fallingLeaves(canvas){
 function fall(){
 	frame += 1;
 	//console.log(frame);
-	if (frame % 10 == 0 && frame < 11000){
+	if (frame % 2 == 0 && frame < 2500){
 	let choice = Math.floor(Math.random()*(leavesArray.length-1))
 	if (!(leavesArray[choice].fall)){
 		selection.push(choice);
@@ -601,9 +603,8 @@ class leaves{
 }
 
 function snowAnimation(){
-    snowBgCanvas= initializeCanvas('canvasSnowBackground');
-    snowFgCanvas= initializeCanvas('canvasSnowForeground');
-    //const treeLocation = [CANVAS_WIDTH * 0.5, CANVAS_HEIGHT * 0.95];
+
+    const treeLocation = [CANVAS_WIDTH * 0.5, CANVAS_HEIGHT * 0.95];
     setInterval(function() {
         handleSnowFlakes(snowBgCanvas);
         drawSnowBackground(snowBgCanvas);
@@ -613,8 +614,7 @@ function snowAnimation(){
 }
 
 
-const snowflakes = new Image();
-snowflakes.src = 'snowflakes.png';
+
 class Snowflake {
     constructor(){
         this.x = Math.random() * CANVAS_WIDTH;
@@ -647,10 +647,7 @@ class Snowflake {
 
 
 }
-const particleArray = [];
-for (let i = 0; i < 20; i++){
-    particleArray.push(new Snowflake);
-}
+
 function handleSnowFlakes(canvas){
     clear(canvas);
     for(let i = 0; i < particleArray.length; i++){
