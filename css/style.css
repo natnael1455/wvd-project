@@ -1,0 +1,80 @@
+ *{
+ 	margin: 0;
+ 	padding: 0;
+ }
+
+
+
+ .bird{
+ 	background:url("../images/bird.png");
+ 	width: 130px;
+ 	height: 175px;
+ 	position: absolute;
+ }
+
+ .bird-1{
+ 	top: 5%;
+ 	left: -10%;
+ 	animation: birdFly 1s steps(10) infinite, birdMove 15s linear infinite;
+
+ 	/* here steps(10) are no of birds in the picture*/
+ }
+
+
+.bird-2{
+ 	top: 20%;
+ 	left: -10%;
+ 	animation: birdFly 1s steps(10) infinite, birdMove 15s linear infinite;
+ 	/* here steps(10) are no of birds in the picture*/
+ 	animation-delay:3s;
+ }
+
+
+ .bird-3{
+ 	top: 2%;
+ 	left: -10%;
+ 	animation: birdFly 1s steps(10) infinite, birdMove 15s linear infinite;
+ 	/* here steps(10) are no of birds in the picture*/
+ 	animation-delay:5s;
+ }
+
+
+ /*==now animation time==*/
+
+ @keyframes birdFly{
+ 	0%{
+ 		background-position-x: 0px;
+	}
+
+ 	100%{
+		background-position-x: 1305px;
+	}
+
+}
+
+
+/*== now bird move left to right animation time==*/
+@keyframes birdMove{
+	0%{
+		left: -10%;
+	}
+
+	100%{
+		left: 110%;
+	}
+
+}
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
