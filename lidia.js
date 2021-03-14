@@ -118,7 +118,7 @@ function animation(){
 	sun_rotation();
 	let snow;
 
-	if ((angle>200 && angle<360)|| season =="winter"){
+	if ((angle>180 && angle<360)|| season =="winter"){
 		birds.map(bird =>{
 			if(bird.offsetLeft<=-20 || bird.offsetLeft >=window.innerWidth){
 				bird.style.visibility="hidden";
