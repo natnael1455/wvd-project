@@ -25,6 +25,7 @@ let autumn_change;
 let fallStop;
 let snowBgCanvas;
 let snowFgCanvas;
+let birds=[];
 const CANVAS_WIDTH = window.innerWidth;
 const CANVAS_HEIGHT = window.innerHeight;
 let petals = ['red','yellow','violet','pink'];
@@ -34,6 +35,7 @@ let s = 0;
 let sun_img;
 let moon_img;
 let count =0;
+let season = "summer";
 const snowflakes = new Image();
 snowflakes.src = 'snowflakes.png';
 const particleArray = [];
@@ -59,6 +61,13 @@ function main(){
 		particleArray.push(new Snowflake);
 	}
 	
+	for (let i = 1; i<=3; i++){
+		let	bird = document.getElementById(`bird${i}`);
+		birds.push(bird);
+	}
+
+	console.log(birds[0])
+
 	canvas1 = initializeCanvas("myCanvas_tree");
 	canvas2 = initializeCanvas("myCanvas_leaves");
 	canvas3 = initializeCanvas("myCanvas_house");
@@ -107,9 +116,18 @@ function setLeafcolor(palette){
 
 function animation(){
 	sun_rotation();
+	let snow;
+
+	if ((angle>200 && angle<360)|| season =="winter"){
+		birds.map(bird => bird.style.visibility="hidden");
+	}
+	else{
+		birds.map(bird => bird.style.visibility="visible");
+	}
 	if (time >=0 && time< 12000){
 		// summer here
 		console.log('summer');
+		season="summer";
 		if(s<=240){	 
 			s=s+1;
 		summer_current[0] = summer_current[0] - summer_change[0];
@@ -126,6 +144,7 @@ function animation(){
 	
 	else if (time >=12000 && time<20000){
 		console.log('autumn');
+		season="autumn";
 		// autumn here
 		if(s<=480){	 
 			s=s+1;
@@ -155,6 +174,7 @@ function animation(){
 	
 	else if (time >53400 && time< 62000){
 		// winter here
+		season = "winter";
 		if (time===54000){
 			
 			document.getElementById("myCanvas_leaves").style.visibility = "hidden";
@@ -162,7 +182,8 @@ function animation(){
 			clearInterval(fallStop);
 		}
 		else{
-		snowAnimation();}
+		snow = snowAnimation();
+		}
 		//document.getElementById("myCanvas_leaves").style.visibility = "hidden";
 		//document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
 
@@ -171,9 +192,12 @@ function animation(){
 	
 	else if (time >= 62000 && time < 80000){
 		// spring here
+		season = "spring";
 		document.getElementById("myCanvas_leaves").style.visibility = "hidden";
 		document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
 		document.getElementById("myCanvas_spring").style.visibility = "visible";
+	    clearInterval(snow)
+		snowBgCanvas.style.visibility="hidden";
 		drawGrass(canvas3,radius);
 		let ctx = canvas3.getContext("2d");
 		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
@@ -605,12 +629,12 @@ class leaves{
 function snowAnimation(){
 
     const treeLocation = [CANVAS_WIDTH * 0.5, CANVAS_HEIGHT * 0.95];
-    setInterval(function() {
+ let  snows = setInterval(function() {
         handleSnowFlakes(snowBgCanvas);
         drawSnowBackground(snowBgCanvas);
     },1000/60);  
     drawSnowForeground(snowFgCanvas); 
-
+   return snows;
 }
 
 
@@ -619,7 +643,7 @@ class Snowflake {
     constructor(){
         this.x = Math.random() * CANVAS_WIDTH;
         this.y = Math.random() * CANVAS_HEIGHT;
-        this.size = Math.random() * 60 + 20;
+        this.size = Math.random() * 15 + 5;
         this.speed = Math.random() * 0.5 + 0.2;
         this.frameX = Math.floor(Math.random() * 4);
         this.frameY = Math.floor(Math.random() * 4);
