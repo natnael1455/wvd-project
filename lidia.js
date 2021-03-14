@@ -120,14 +120,14 @@ function animation(){
 
 	if ((angle>180 && angle<360)|| season =="winter"){
 		birds.map(bird =>{
-			if(bird.offsetLeft<=-20 || bird.offsetLeft >=window.innerWidth){
+			if(bird.offsetLeft<=-100 || bird.offsetLeft >=window.innerWidth){
 				bird.style.visibility="hidden";
 			}
 		});
 	}
 	else{
 		birds.map(bird => {
-			if(bird.offsetLeft<=-20 || bird.offsetLeft >=window.innerWidth){
+			if(bird.offsetLeft<=-100 || bird.offsetLeft >=window.innerWidth){
 				bird.style.visibility="visible";
 			}
 		});
