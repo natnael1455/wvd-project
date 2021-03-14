@@ -36,6 +36,7 @@ let sun_img;
 let moon_img;
 let count =0;
 let season = "summer";
+
 const snowflakes = new Image();
 snowflakes.src = 'snowflakes.png';
 const particleArray = [];
@@ -57,7 +58,7 @@ window.onload = function () {
 
 
 function main(){
-	for (let i = 0; i < 20; i++){
+	for (let i = 0; i < 40; i++){
 		particleArray.push(new Snowflake);
 	}
 	
@@ -180,7 +181,7 @@ function animation(){
 		}
 	
 	
-	else if (time >49400 && time< 58000){
+	else if (time >49400 && time< 60000){
 		// winter here
 		season = "winter";
 		if (time===50000){
@@ -191,11 +192,14 @@ function animation(){
 		}
 		else{
 		snow = snowAnimation();
-		let ctx = canvas3.getContext("2d");
+		if (time>51000){	
+		drawsnow();}
+		/*let ctx = canvas3.getContext("2d");
 		ctx.beginPath();
 		ctx.fillStyle =`white`;
 		ctx.fillRect(0,canvas3.height*0.75,window.innerWidth,canvas3.height*0.25);
 		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
+		*/
 
 		}
 		//document.getElementById("myCanvas_leaves").style.visibility = "hidden";
@@ -204,23 +208,28 @@ function animation(){
 
 	}
 	
-	else if (time >= 58000 && time < 76000){
+	else if (time >= 60000 && time < 76000){
 		// spring here
 		season = "spring";
-		document.getElementById("myCanvas_leaves").style.visibility = "hidden";
-		document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
-		document.getElementById("myCanvas_spring").style.visibility = "visible";
-	    clearInterval(snow)
-		snowBgCanvas.style.visibility="hidden";
+
+		
 		
 		let ctx = canvas3.getContext("2d");
-		if (time===58000){
+		if (time===60000){
+			document.getElementById("myCanvas_leaves").style.visibility = "hidden";
+			document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
+			document.getElementById("myCanvas_spring").style.visibility = "visible";
+			document.getElementById("canvasSnowBackground").style.display = "none";
+			document.getElementById("canvasSnowForeground").style.display = "none";
+	
+		clearInterval(snow);
 		ctx.beginPath();
 		ctx.fillStyle =`rgba(${autumn_current})`;
 		ctx.fillRect(0,canvas3.height*0.75,window.innerWidth,canvas3.height*0.25);}
+
 		drawGrass(canvas3,radius);
 		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
-		if (time >=59000 && time % 1000 == 0){
+		if (time >=61000 && time % 1000 == 0){
 			if (radius<=10){
 			radius += 1;
 			//drawSpringLeaves(canvas5,radius);
@@ -645,14 +654,29 @@ class leaves{
 	}
 }
 
+function drawsnow(){
+	for (let i = 0; i<=10; i++){
+	let x = Math.random()*window.innerWidth;
+	let y = Math.random()*window.innerHeight*0.25 + window.innerHeight*0.75;
+	if (((x<(window.innerWidth/10)-5) || (x > ((window.innerWidth/10)-5) + window.innerHeight*0.5))||(y>((window.innerHeight/2)-40) + window.innerHeight*0.5-10)){ 
+		let ctx1 = snowFgCanvas.getContext('2d');
+		ctx1.beginPath();
+		ctx1.fillStyle = "white";
+		let r = Math.random()*2 + 3;
+		ctx1.arc(x,y,r,0,2*Math.PI);
+		ctx1.fill();
+		ctx1.closePath();}
+	}
+
+}
 function snowAnimation(){
 
     const treeLocation = [CANVAS_WIDTH * 0.5, CANVAS_HEIGHT * 0.95];
- let  snows = setInterval(function() {
+ 	  let snows = setInterval(function() {
         handleSnowFlakes(snowBgCanvas);
         drawSnowBackground(snowBgCanvas);
     },1000/60);  
-    drawSnowForeground(snowFgCanvas); 
+    //drawSnowForeground(snowFgCanvas); 
    return snows;
 }
 
@@ -661,7 +685,7 @@ function snowAnimation(){
 class Snowflake {
     constructor(){
         this.x = Math.random() * CANVAS_WIDTH;
-        this.y = Math.random() * CANVAS_HEIGHT;
+        this.y = -1;
         this.size = Math.random() * 15 + 5;
         this.speed = Math.random() * 0.5 + 0.2;
         this.frameX = Math.floor(Math.random() * 4);
@@ -673,7 +697,19 @@ class Snowflake {
     }
     update(){
         this.y += this.speed;
-        if (this.y - this.size > CANVAS_HEIGHT) this.y = 0 - this.size;
+		this.x += Math.random()*0.2;
+        if (this.y - this.size >=(Math.random()*CANVAS_HEIGHT*0.25 + CANVAS_HEIGHT*0.75)){
+			if (((this.x<(window.innerWidth/10)-5) || (this.x > ((window.innerWidth/10)-5) + window.innerHeight*0.5))||(this.y>((window.innerHeight/2)-40) + window.innerHeight*0.5-10)){ 
+			let ctx1 = snowFgCanvas.getContext('2d');
+			ctx1.beginPath();
+			ctx1.fillStyle = "white";
+			ctx1.arc(this.x,this.y,5,0,2*Math.PI);
+			ctx1.fill();
+			ctx1.closePath();}
+			this.y = 0 - this.size;
+			this.x = Math.random() * CANVAS_WIDTH;
+		
+	}
         this.angle += this.spin;
 
     }
@@ -720,7 +756,7 @@ function drawSnowBackground(canvas){
     ctx.stroke();
     ctx.fill();
 }
-function drawSnowForeground(canvas){
+/*function drawSnowForeground(canvas){
     const ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.moveTo(0, CANVAS_HEIGHT);
@@ -731,4 +767,4 @@ function drawSnowForeground(canvas){
     ctx.stroke();
     ctx.fill();
 
-}
+}*/
