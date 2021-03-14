@@ -119,10 +119,21 @@ function animation(){
 	let snow;
 
 	if ((angle>200 && angle<360)|| season =="winter"){
-		birds.map(bird => bird.style.visibility="hidden");
+		birds.map(bird =>{
+			if(bird.offsetLeft<=-20 || bird.offsetLeft >=window.innerWidth){
+				bird.style.visibility="hidden";
+			}
+			
+			console.log(bird.offsetLeft)
+		});
 	}
 	else{
-		birds.map(bird => bird.style.visibility="visible");
+		birds.map(bird => {
+			if(bird.offsetLeft<=-20 || bird.offsetLeft >=window.innerWidth){
+				bird.style.visibility="visible";
+			}
+			console.log(bird.offsetLeft)
+		});
 	}
 	if (time >=0 && time< 12000){
 		// summer here
