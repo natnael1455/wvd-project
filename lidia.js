@@ -123,8 +123,6 @@ function animation(){
 			if(bird.offsetLeft<=-20 || bird.offsetLeft >=window.innerWidth){
 				bird.style.visibility="hidden";
 			}
-			
-			console.log(bird.offsetLeft)
 		});
 	}
 	else{
@@ -132,7 +130,6 @@ function animation(){
 			if(bird.offsetLeft<=-20 || bird.offsetLeft >=window.innerWidth){
 				bird.style.visibility="visible";
 			}
-			console.log(bird.offsetLeft)
 		});
 	}
 	if (time >=0 && time< 12000){
