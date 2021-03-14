@@ -107,7 +107,7 @@ function initializeCanvas(canvasName){
 
 function setLeafcolor(palette){
 	let change = [];
-	steps = 240;
+	steps = 180;
 	change[0] = (palette[0][0] - palette[1][0]) / steps;
 	change[1] = (palette[0][1] - palette[1][1]) / steps;
 	change[2]= (palette[0][2] - palette[1][2]) / steps;
@@ -132,11 +132,11 @@ function animation(){
 			}
 		});
 	}
-	if (time >=0 && time< 12000){
+	if (time >=0 && time< 8000){
 		// summer here
 		console.log('summer');
 		season="summer";
-		if(s<=240){	 
+		if(s<=180){	 
 			s=s+1;
 		summer_current[0] = summer_current[0] - summer_change[0];
     	summer_current[1] = summer_current[1] - summer_change[1];
@@ -150,11 +150,11 @@ function animation(){
 		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
 	}
 	
-	else if (time >=12000 && time<20000){
+	else if (time >=8000 && time<16000){
 		console.log('autumn');
 		season="autumn";
 		// autumn here
-		if(s<=480){	 
+		if(s<=360){	 
 			s=s+1;
 		autumn_current[0] = autumn_current[0] - autumn_change[0];
     	autumn_current[1] = autumn_current[1] - autumn_change[1];
@@ -171,8 +171,8 @@ function animation(){
 
 		}
 		//leaves falling
-	else if(time >= 20000 && time <= 53400){
-		if (time === 20000){
+	else if(time >= 16000 && time <= 49400){
+		if (time === 16000){
 			fallingLeaves(canvas2);
 			fallStop = setInterval(fall,10);
 			}
@@ -180,10 +180,10 @@ function animation(){
 		}
 	
 	
-	else if (time >53400 && time< 62000){
+	else if (time >49400 && time< 58000){
 		// winter here
 		season = "winter";
-		if (time===54000){
+		if (time===50000){
 			
 			document.getElementById("myCanvas_leaves").style.visibility = "hidden";
 			document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
@@ -191,6 +191,12 @@ function animation(){
 		}
 		else{
 		snow = snowAnimation();
+		let ctx = canvas3.getContext("2d");
+		ctx.beginPath();
+		ctx.fillStyle =`white`;
+		ctx.fillRect(0,canvas3.height*0.75,window.innerWidth,canvas3.height*0.25);
+		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
+
 		}
 		//document.getElementById("myCanvas_leaves").style.visibility = "hidden";
 		//document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
@@ -198,7 +204,7 @@ function animation(){
 
 	}
 	
-	else if (time >= 62000 && time < 80000){
+	else if (time >= 58000 && time < 76000){
 		// spring here
 		season = "spring";
 		document.getElementById("myCanvas_leaves").style.visibility = "hidden";
@@ -206,10 +212,15 @@ function animation(){
 		document.getElementById("myCanvas_spring").style.visibility = "visible";
 	    clearInterval(snow)
 		snowBgCanvas.style.visibility="hidden";
-		drawGrass(canvas3,radius);
+		
 		let ctx = canvas3.getContext("2d");
+		if (time===58000){
+		ctx.beginPath();
+		ctx.fillStyle =`rgba(${autumn_current})`;
+		ctx.fillRect(0,canvas3.height*0.75,window.innerWidth,canvas3.height*0.25);}
+		drawGrass(canvas3,radius);
 		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
-		if (time >=63000 && time % 1000 == 0){
+		if (time >=59000 && time % 1000 == 0){
 			if (radius<=10){
 			radius += 1;
 			//drawSpringLeaves(canvas5,radius);
