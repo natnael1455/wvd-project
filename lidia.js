@@ -181,7 +181,7 @@ function animation(){
 		}
 	
 	
-	else if (time >49400 && time< 60000){
+	else if (time >49400 && time< 70000){
 		// winter here
 		season = "winter";
 		if (time===50000){
@@ -189,10 +189,9 @@ function animation(){
 			document.getElementById("myCanvas_leaves").style.visibility = "hidden";
 			document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
 			clearInterval(fallStop);
+			snow = snowAnimation();
 		}
-		else{
-		snow = snowAnimation();
-		if (time>51000){	
+		else if (time>54000){	
 		drawsnow();}
 		/*let ctx = canvas3.getContext("2d");
 		ctx.beginPath();
@@ -201,21 +200,20 @@ function animation(){
 		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
 		*/
 
-		}
 		//document.getElementById("myCanvas_leaves").style.visibility = "hidden";
 		//document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
 
 
 	}
 	
-	else if (time >= 60000 && time < 76000){
+	else if (time >= 72000 && time < 88000){
 		// spring here
 		season = "spring";
 
 		
 		
 		let ctx = canvas3.getContext("2d");
-		if (time===60000){
+		if (time===72000){
 			document.getElementById("myCanvas_leaves").style.visibility = "hidden";
 			document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
 			document.getElementById("myCanvas_spring").style.visibility = "visible";
@@ -229,7 +227,7 @@ function animation(){
 
 		drawGrass(canvas3,radius);
 		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
-		if (time >=61000 && time % 1000 == 0){
+		if (time >=73000 && time % 1000 == 0){
 			if (radius<=10){
 			radius += 1;
 			//drawSpringLeaves(canvas5,radius);
@@ -675,7 +673,7 @@ function snowAnimation(){
  	  let snows = setInterval(function() {
         handleSnowFlakes(snowBgCanvas);
         drawSnowBackground(snowBgCanvas);
-    },1000/60);  
+    },10);  
     //drawSnowForeground(snowFgCanvas); 
    return snows;
 }
@@ -687,7 +685,7 @@ class Snowflake {
         this.x = Math.random() * CANVAS_WIDTH;
         this.y = -1;
         this.size = Math.random() * 15 + 5;
-        this.speed = Math.random() * 0.5 + 0.2;
+        this.speed = Math.random() + 0.5;
         this.frameX = Math.floor(Math.random() * 4);
         this.frameY = Math.floor(Math.random() * 4);
         this.frameSize = 250;
