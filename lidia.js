@@ -107,6 +107,7 @@ function initializeCanvas(canvasName){
 }
 
 function setLeafcolor(palette){
+	//https://webplatform.github.io/docs/tutorials/animation_in_javascript_2/
 	let change = [];
 	steps = 180;
 	change[0] = (palette[0][0] - palette[1][0]) / steps;
@@ -193,15 +194,6 @@ function animation(){
 		}
 		else if (time>54000){	
 		drawsnow();}
-		/*let ctx = canvas3.getContext("2d");
-		ctx.beginPath();
-		ctx.fillStyle =`white`;
-		ctx.fillRect(0,canvas3.height*0.75,window.innerWidth,canvas3.height*0.25);
-		ctx.drawImage(house_image,window.innerWidth/10,window.innerHeight/2-40,window.innerHeight*0.5,window.innerHeight*0.5);
-		*/
-
-		//document.getElementById("myCanvas_leaves").style.visibility = "hidden";
-		//document.getElementById("myCanvas_leaves_falling").style.visibility = "hidden";
 
 
 	}
@@ -346,6 +338,7 @@ function moon(size,ctx,x,y){
 		}
 }
 function drawTree(ctx,ctx1,ctx2,season,loc,color,height, angle, thick,a){
+	//https://www.youtube.com/watch?v=axve3EgJlYI
 	
 	ctx.beginPath();
 	ctx1.beginPath();
